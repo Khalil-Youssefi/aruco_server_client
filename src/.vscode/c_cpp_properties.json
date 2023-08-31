@@ -1,0 +1,38 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/khalil/arc/ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/khalil/march23/ros-sim/devel/include/**",
+        "/home/khalil/arc/ws/src/swarm_functions/area_division/include/**",
+        "/home/khalil/arc/ws/src/sensing_actuation/area_provider/include/**",
+        "/home/khalil/arc/ws/src/swarm_functions/battery_exchanger/include/**",
+        "/home/khalil/arc/ws/src/swarm_functions/collision_avoidance/include/**",
+        "/home/khalil/arc/ws/src/swarm_functions/coverage_path/include/**",
+        "/home/khalil/arc/ws/src/swarm_functions/kinematics_exchanger/include/**",
+        "/home/khalil/arc/ws/src/sensing_actuation/mavros_battery_monitor/include/**",
+        "/home/khalil/arc/ws/src/sensing_actuation/mavros_gps/include/**",
+        "/home/khalil/arc/ws/src/sensing_actuation/mavros_pos_provider/include/**",
+        "/home/khalil/arc/ws/src/hardware_functions/moveto/include/**",
+        "/home/khalil/arc/ws/src/sensing_actuation/obstacle_detection/include/**",
+        "/home/khalil/arc/ws/src/hardware_functions/return/include/**",
+        "/home/khalil/arc/ws/src/swarm_functions/roi_assignment/include/**",
+        "/home/khalil/arc/ws/src/swarm_functions/state_exchanger/include/**",
+        "/home/khalil/arc/ws/src/swarm_functions/target_monitor/include/**",
+        "/home/khalil/arc/ws/src/hardware_functions/uav_mavros_takeoff/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
