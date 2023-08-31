@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="aruco_marker_localization" type="cam2topic.py" name="cam2topic" output="screen"/>
+  <node pkg="aruco_marker_localization" type="cameraserver.py" name="fast_camera_server" output="screen"/>
+
+</launch>
