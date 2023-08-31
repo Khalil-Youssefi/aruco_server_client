@@ -5,6 +5,7 @@ import cv2
 from sensor_msgs.msg import CompressedImage,Image
 from cv_bridge import CvBridge
 import threading
+import numpy as np
 
 def generate_random_image(width: int, height: int):
     '''
