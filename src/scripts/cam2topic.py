@@ -2,7 +2,7 @@
 
 import rospy
 import cv2
-from sensor_msgs.msg import CompressedImage
+from sensor_msgs.msg import CompressedImage,Image
 from cv_bridge import CvBridge
 import threading
 
