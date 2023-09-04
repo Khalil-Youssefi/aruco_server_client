@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-
-  <node pkg="aruco_marker_localization" type="tf_and_cam_publisher.py" name="tf_and_cam_publisher" output="screen"/>
-
-  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find aruco_marker_localization)/src/rviz/config.rviz" output="screen"/>
-
-</launch>
