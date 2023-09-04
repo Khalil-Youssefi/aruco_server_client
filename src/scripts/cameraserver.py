@@ -10,7 +10,7 @@ import threading
 
 # Server settings
 server_ip = "192.168.1.104"
-server_port = 54322
+server_port = 54323
 
 # Create a TCP socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -61,5 +61,5 @@ def camera_server():
 if __name__ == '__main__':
     try:
         camera_server()
-    except rospy.ROSInterruptException:
-        pass
+    except rospy.ROSInterruptException as e:
+        print(str(e))
