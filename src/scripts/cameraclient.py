@@ -21,7 +21,7 @@ def publish_transform():
 
     rate = rospy.Rate(30)
 
-    server_ip = "192.168.1.104"
+    server_ip = "192.168.1.15"
     server_port = 54323
 
     bridge = CvBridge()

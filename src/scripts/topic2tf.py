@@ -29,70 +29,73 @@ def get_reprojection_error(object_points, image_points, camera_matrix, dist_coef
 def image_callback(image_msg):
     global broadcaster,cameraMatrix,distcoeff,detector,objPoints,image_publisher,bridge
 
-    image = bridge.imgmsg_to_cv2(image_msg)
+    try:
+        image = bridge.imgmsg_to_cv2(image_msg)
     
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    image = gray
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        # image = gray
 
-    markerCorners, markerIds, rejectedCandidates = detector.detectMarkers(gray)
+        markerCorners, markerIds, rejectedCandidates = detector.detectMarkers(gray)
 
-    if len(markerCorners) > 0:
-        # print('publishing ...')
-        retval, rvec, tvec = cv2.solvePnP(objPoints, markerCorners[0],cameraMatrix,distcoeff)
+        if len(markerCorners) > 0:
+            # print('publishing ...')
+            retval, rvec, tvec = cv2.solvePnP(objPoints, markerCorners[0],cameraMatrix,distcoeff)
 
-        estimation_error = get_reprojection_error(objPoints,markerCorners[0],cameraMatrix,distcoeff,rvec,tvec)
-        corners = np.array(markerCorners).reshape((4,2))
-        object_error = (estimation_error / np.linalg.norm(corners[0]-corners[2])) * (np.linalg.norm(tvec) / marker_size)
+            estimation_error = get_reprojection_error(objPoints,markerCorners[0],cameraMatrix,distcoeff,rvec,tvec)
+            corners = np.array(markerCorners).reshape((4,2))
+            object_error = (estimation_error / np.linalg.norm(corners[0]-corners[2])) * (np.linalg.norm(tvec) / marker_size)
 
-        if (object_error > 0.2):
-            print(f'ignoring detection with big error of {object_error}')
-        else:
-            print(f'accepting detection with big error of {object_error}')
+            if (object_error > 0.2):
+                rospy.logwarn(f'ignoring detection with big error of {object_error}')
+            else:
+                # print(f'accepting detection with big error of {object_error}')
 
 
-            cv2.aruco.drawDetectedMarkers(image, markerCorners, markerIds)
+                cv2.aruco.drawDetectedMarkers(image, markerCorners, markerIds)
 
-            axis_length = marker_size/2
-            axis_points = np.array([[0, 0, 0],               # Origin
-                                    [axis_length, 0, 0],     # X-axis
-                                    [0, axis_length, 0],     # Y-axis
-                                    [0, 0, axis_length]],    # Z-axis
-                                    dtype=np.float32)
-            img_points, _ = cv2.projectPoints(axis_points, rvec, tvec, cameraMatrix, distcoeff)
-            img_points = img_points.astype(int)
-            origin = tuple(img_points[0].ravel())
-            x_axis = tuple(img_points[1].ravel())
-            y_axis = tuple(img_points[2].ravel())
-            z_axis = tuple(img_points[3].ravel())
-            cv2.line(image, origin, x_axis, (0, 0, 255), 5)
-            cv2.line(image, origin, y_axis, (0, 255, 0), 5)
-            cv2.line(image, origin, z_axis, (255, 0, 0), 5)
+                axis_length = marker_size/2
+                axis_points = np.array([[0, 0, 0],               # Origin
+                                        [axis_length, 0, 0],     # X-axis
+                                        [0, axis_length, 0],     # Y-axis
+                                        [0, 0, axis_length]],    # Z-axis
+                                        dtype=np.float32)
+                img_points, _ = cv2.projectPoints(axis_points, rvec, tvec, cameraMatrix, distcoeff)
+                img_points = img_points.astype(int)
+                origin = tuple(img_points[0].ravel())
+                x_axis = tuple(img_points[1].ravel())
+                y_axis = tuple(img_points[2].ravel())
+                z_axis = tuple(img_points[3].ravel())
+                cv2.line(image, origin, x_axis, (0, 0, 255), 5)
+                cv2.line(image, origin, y_axis, (0, 255, 0), 5)
+                cv2.line(image, origin, z_axis, (255, 0, 0), 5)
 
-            ros_img_msg = bridge.cv2_to_imgmsg(image)   
-            image_publisher.publish(ros_img_msg)
+                ros_img_msg = bridge.cv2_to_imgmsg(image)   
+                image_publisher.publish(ros_img_msg)
 
-            quaternion = tf.transformations.quaternion_from_euler(rvec[0], rvec[1], rvec[2])
+                quaternion = tf.transformations.quaternion_from_euler(rvec[0], rvec[1], rvec[2])
 
-            header = Header()
-            header.stamp = rospy.Time.now()
-            header.frame_id = parent_frame_id
-            pose = PoseStamped(header=header)
-            pose.pose.position.x = tvec[0]
-            pose.pose.position.y = tvec[1]
-            pose.pose.position.z = tvec[2]
-            pose.pose.orientation.x = quaternion[0]
-            pose.pose.orientation.y = quaternion[1]
-            pose.pose.orientation.z = quaternion[2]
-            pose.pose.orientation.w = quaternion[3]
+                header = Header()
+                header.stamp = rospy.Time.now()
+                header.frame_id = parent_frame_id
+                pose = PoseStamped(header=header)
+                pose.pose.position.x = tvec[0]
+                pose.pose.position.y = tvec[1]
+                pose.pose.position.z = tvec[2]
+                pose.pose.orientation.x = quaternion[0]
+                pose.pose.orientation.y = quaternion[1]
+                pose.pose.orientation.z = quaternion[2]
+                pose.pose.orientation.w = quaternion[3]
 
-            broadcaster.sendTransform((tvec[0], tvec[1], tvec[2]),
-                                    quaternion,
-                                    header.stamp,
-                                    child_frame_id,
-                                    parent_frame_id)
+                broadcaster.sendTransform((tvec[0], tvec[1], tvec[2]),
+                                        quaternion,
+                                        header.stamp,
+                                        child_frame_id,
+                                        parent_frame_id)
 
-    ros_img_msg = bridge.cv2_to_imgmsg(image)   
-    image_publisher.publish(ros_img_msg)
+        ros_img_msg = bridge.cv2_to_imgmsg(image)   
+        image_publisher.publish(ros_img_msg)
+    except Exception as e:
+        rospy.logerr(e)
     
 if __name__ == "__main__":
     try:
@@ -114,19 +117,19 @@ if __name__ == "__main__":
         
         detectorParams = aruco.DetectorParameters()
         detectorParams.minMarkerPerimeterRate = 0.03
-        detectorParams.maxMarkerPerimeterRate = 4.0
-        detectorParams.polygonalApproxAccuracyRate = 0.005 #0.05
-        detectorParams.minCornerDistanceRate = 0.005 #0.05
+        detectorParams.maxMarkerPerimeterRate = 2.0
+        detectorParams.polygonalApproxAccuracyRate = 0.05 #0.05
+        detectorParams.minCornerDistanceRate = 0.05 #0.05
         detectorParams.minOtsuStdDev = 5 # 5
-        detectorParams.perspectiveRemovePixelPerCell = 1 # 4
-        detectorParams.perspectiveRemoveIgnoredMarginPerCell = 0.1 #0.13
+        detectorParams.perspectiveRemovePixelPerCell = 4 # 4
+        detectorParams.perspectiveRemoveIgnoredMarginPerCell = 0.13 #0.13
         detectorParams.maxErroneousBitsInBorderRate = 0.35 #0.35
         detectorParams.errorCorrectionRate = 0.5 # 0.6
         detectorParams.cornerRefinementMethod = cv2.aruco.CORNER_REFINE_SUBPIX # CORNER_REFINE_NONE | CORNER_REFINE_SUBPIX | CORNER_REFINE_CONTOUR
         # for subpix
         detectorParams.cornerRefinementWinSize = 5 # 5
-        detectorParams.cornerRefinementMaxIterations = 1000 # 30
-        detectorParams.cornerRefinementMinAccuracy = 0.01 # 0.1
+        detectorParams.cornerRefinementMaxIterations = 2000 # 30
+        detectorParams.cornerRefinementMinAccuracy = 0.005 # 0.1
         dictionary = aruco.getPredefinedDictionary(aruco.DICT_5X5_1000)
         detector = aruco.ArucoDetector(dictionary, detectorParams)
 

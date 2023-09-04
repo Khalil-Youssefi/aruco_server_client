@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="aruco_marker_localization" type="video2topic_manual.py" name="video2topic_manual" output="screen"/>
+  <node pkg="aruco_marker_localization" type="topic2tf.py" name="topic2tf" output="screen"/>
+  <!-- <node pkg="aruco_marker_localization" type="topic2tf_no_pp.py" name="topic2tf_no_pp" output="screen"/> -->
+
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find aruco_marker_localization)/src/rviz/config2.rviz" output="screen"/>
+
+</launch>
