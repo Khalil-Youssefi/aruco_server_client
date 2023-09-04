@@ -22,7 +22,7 @@ def publish_transform():
     rate = rospy.Rate(30)
 
     server_ip = "192.168.1.104"
-    server_port = 54322
+    server_port = 54323
 
     bridge = CvBridge()
     while not rospy.is_shutdown():
@@ -37,7 +37,7 @@ def publish_transform():
                 if not data:
                     break
                 image_bytes += data
-
+                
             nparr = np.frombuffer(image_bytes, np.uint8)
             image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
             
