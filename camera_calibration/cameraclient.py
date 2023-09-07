@@ -6,7 +6,7 @@ import datetime
 import os
 
 curdir = os.path.dirname(os.path.abspath(__file__))
-folder_name = curdir+ "/calib_drone"
+folder_name = curdir+ "/calib_drone_khalil"
 if not os.path.exists(folder_name):
     os.makedirs(folder_name)
 
