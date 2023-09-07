@@ -6,7 +6,7 @@ import datetime
 import os
 
 curdir = os.path.dirname(os.path.abspath(__file__))
-folder_name = curdir+ "/calib_drone_blue"
+folder_name = curdir+ "/calib_drone_orange"
 if not os.path.exists(folder_name):
     os.makedirs(folder_name)
 
@@ -21,7 +21,7 @@ def save_image_with_timestamp(image):
         print(f"Error: {e}")
 
 # Server settings
-server_ip = "192.168.4.169"
+server_ip = "192.168.4.126"
 server_port = 54323
 
 stime = time()
