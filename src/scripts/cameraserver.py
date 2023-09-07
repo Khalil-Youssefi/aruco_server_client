@@ -9,7 +9,7 @@ from time import time
 import threading
 
 # Server settings
-server_ip = "192.168.4.174"
+server_ip = "192.168.1.16"
 server_port = 54323
 
 # Create a TCP socket

@@ -6,7 +6,7 @@ import datetime
 import os
 
 curdir = os.path.dirname(os.path.abspath(__file__))
-folder_name = curdir+ "/calib_drone_khalil"
+folder_name = curdir+ "/calib_drone_purple"
 if not os.path.exists(folder_name):
     os.makedirs(folder_name)
 
@@ -15,13 +15,13 @@ def save_image_with_timestamp(image):
         now = datetime.datetime.now()
         date_time_str = now.strftime("%Y%m%d_%H%M%S")
         new_filename = f"img_{date_time_str}.jpg"
-        cv2.imwrite(curdir + "/calib_drone/" + new_filename, image)
+        cv2.imwrite(folder_name + "/" + new_filename, image)
         print(f"Image saved as {new_filename}")
     except Exception as e:
         print(f"Error: {e}")
 
 # Server settings
-server_ip = "192.168.4.174"
+server_ip = "192.168.1.16"
 server_port = 54323
 
 stime = time()
