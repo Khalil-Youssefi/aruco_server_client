@@ -15,14 +15,14 @@ def save_image_with_timestamp(image):
         now = datetime.datetime.now()
         date_time_str = now.strftime("%Y%m%d_%H%M%S")
         new_filename = f"img_{date_time_str}.jpg"
-        cv2.imwrite("calib_drone/" + new_filename, image)
+        cv2.imwrite(curdir + "/calib_drone/" + new_filename, image)
         print(f"Image saved as {new_filename}")
     except Exception as e:
         print(f"Error: {e}")
 
 # Server settings
-server_ip = "192.168.4.126"
-server_port = 54321
+server_ip = "192.168.4.174"
+server_port = 54323
 
 stime = time()
 cv2.namedWindow("Received Image", cv2.WINDOW_NORMAL)
@@ -33,9 +33,6 @@ while True:
 
     # Connect to the server
     client_socket.connect((server_ip, server_port))
-    print("Connected to the server.")
-
-
 
     # Send the request to the server
     client_socket.sendall("send".encode())
@@ -56,7 +53,6 @@ while True:
     client_socket.close()
     # Display the image
     cv2.imshow("Received Image", image)
-    print(f'Getting image took {time()-stime} s.')
        # Wait for key press
     key = cv2.waitKey(0)
     stime = time()
