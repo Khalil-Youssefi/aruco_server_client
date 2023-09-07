@@ -58,6 +58,10 @@ def generate_random_image(width: int, height: int):
 # for fast capturing
 # A thread that keeps 'image' up to date
 capturer = cv2.VideoCapture(0)
+width = 1280
+height = 720
+capturer.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+capturer.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 image = None
 block_r = False
 block_w = False
