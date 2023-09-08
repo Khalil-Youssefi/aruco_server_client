@@ -21,7 +21,7 @@ def save_image_with_timestamp(image):
         print(f"Error: {e}")
 
 # Server settings
-server_ip = "192.168.4.126"
+server_ip = "192.168.1.11"
 server_port = 54323
 
 stime = time()
